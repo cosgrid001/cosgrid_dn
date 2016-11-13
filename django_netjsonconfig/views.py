@@ -1,6 +1,14 @@
 import json
 from copy import deepcopy
 
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+from django_netjsonconfig.models.vpn import Vpn
+from django_netjsonconfig.models.template import Template
+from django_netjsonconfig.models.config import Config
+from django_x509.models import Ca, Cert
+from rest_framework import viewsets
+from django_netjsonconfig import serializers
 from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.module_loading import import_string
@@ -51,3 +59,39 @@ def schema(request):
         c = login_required_error
         status = 403
     return HttpResponse(c, status=status, content_type='application/json')
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = serializers.UserSerializer
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = serializers.GroupSerializer
+
+class VpnViewSet(viewsets.ModelViewSet):
+    queryset = Vpn.objects.all()
+    serializer_class = serializers.VpnSerializer
+
+class TemplateViewSet(viewsets.ModelViewSet):
+    queryset = Template.objects.all()
+    serializer_class = serializers.TemplateSerializer
+
+class ConfigViewSet(viewsets.ModelViewSet):
+    queryset = Config.objects.all()
+    serializer_class = serializers.ConfigSerializer
+
+class CaViewSet(viewsets.ModelViewSet):
+    queryset = Ca.objects.all()
+    serializer_class = serializers.CaSerializer
+
+class CertViewSet(viewsets.ModelViewSet):
+    queryset = Cert.objects.all()
+    serializer_class = serializers.CertSerializer
+

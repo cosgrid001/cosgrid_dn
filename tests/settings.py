@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
@@ -25,8 +25,19 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'sortedm2m',
     'reversion',
-    'django_x509'
+    'django_x509',
+    'rest_framework',
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -45,7 +56,8 @@ LANGUAGE_CODE = 'en-gb'
 USE_TZ = True
 USE_I18N = False
 USE_L10N = False
-STATIC_URL = '/static/'
+STATIC_ROOT = '/opt/django-netjsonconfig/static/'
+STATIC_URL = '/opt/django-netjsonconfig/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
@@ -74,3 +86,4 @@ try:
     from local_settings import *
 except ImportError:
     pass
+

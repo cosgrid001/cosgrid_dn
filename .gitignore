@@ -61,5 +61,5 @@ target/
 *~
 ._*
 local_settings.py
-*.db
+#*.db
 *.tar.gz

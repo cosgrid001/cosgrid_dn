@@ -11,36 +11,41 @@ from rest_framework import serializers
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'url', 'username', 'email', 'groups')
+        fields = ("id", "url", "username", "email", "groups")
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
-        fields = ('id', 'url', 'name')
+        fields = ("id", "url", "name")
 
 class VpnSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = vpn.Vpn
-        fields = '__all__'
+        fields = ("id", "url", "name", "host", "backend", "ca", "cert", "notes")
 
 class ConfigSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = config.Config
-        fields = '__all__'
+        fields = ("id", "url", "name", "backend", "config", "created", "modified", "status", "key",
+                  "mac_address", "last_ip", "templates", "vpn")
 
 class TemplateSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = template.Template
-        fields = '__all__'
+        fields = ("id", "url", "name", "backend", "config", "created", "modified", "type", "default", "auto_cert", "vpn")
 
 class CaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Ca
-        fields = '__all__'
+        fields = ("id", "url", "name", "notes", "key_length", "digest", "validity_start", "validity_end",
+                  "country_code", "state", "city", "organization", "email", "common_name", "extensions",
+                  "serial_number", "certificate", "private_key", "created", "modified")
 
 class CertSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Cert
-        fields = '__all__'
+        fields = ("id", "url", "name", "notes", "key_length", "digest", "validity_start", "validity_end",
+                  "country_code", "state", "city", "organization", "email", "common_name", "extensions",
+                  "serial_number", "certificate", "private_key", "created", "modified", "revoked", "revoked_at", "ca")
 
 

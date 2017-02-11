@@ -27,7 +27,20 @@ INSTALLED_APPS = [
     'reversion',
     'django_x509',
     'rest_framework',
+    'channels'
 ]
+
+
+# Channel settings
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+        "ROUTING": "django_netjsonconfig.routing.channel_routing",
+    },
+}
 
 
 REST_FRAMEWORK = {

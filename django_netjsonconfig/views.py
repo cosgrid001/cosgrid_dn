@@ -8,6 +8,10 @@ from django_netjsonconfig.models.template import Template
 from django_netjsonconfig.models.config import Config
 from django_x509.models import Ca, Cert
 from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from channels import Group as ChannenGroup
 from django_netjsonconfig import serializers
 from django.http import HttpResponse
 from django.utils import timezone
@@ -95,3 +99,17 @@ class CertViewSet(viewsets.ModelViewSet):
     queryset = Cert.objects.all()
     serializer_class = serializers.CertSerializer
 
+
+class ConfigView(APIView):
+
+    def get(self, request):
+        config_list = list()
+        label = request.query_params.get('name', None)
+        configs = Config.objects.all()
+        for config in configs:
+            config_list.append({"status": config.status,
+                                "key": config.key,
+                                "mac_address": config.mac_address,
+                                "last_ip": config.last_ip})
+        ChannenGroup(label).send({'text': json.dumps(config_list)})
+        return Response(config_list, status=status.HTTP_200_OK)

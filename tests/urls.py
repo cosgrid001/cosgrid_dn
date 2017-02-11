@@ -16,7 +16,9 @@ router.register(r'templates', views.TemplateViewSet)
 router.register(r'cas', views.CaViewSet)
 router.register(r'certs', views.CertViewSet)
 
+
 urlpatterns = [
+    url(r'config', views.ConfigView.as_view()),
     url(r'^admin/', include(admin.site.urls)),
     # controller URLs
     # used by devices to download/update their configuration

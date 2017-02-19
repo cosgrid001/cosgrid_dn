@@ -18,7 +18,7 @@ router.register(r'certs', views.CertViewSet)
 
 
 urlpatterns = [
-    url(r'pushconfig', views.ConfigView.as_view()),
+    url(r'pushconfig/(?P<pk>[0-9A-Za-z_\-]+)', views.ConfigView.as_view()),
     url(r'^admin/', include(admin.site.urls)),
     # controller URLs
     # used by devices to download/update their configuration

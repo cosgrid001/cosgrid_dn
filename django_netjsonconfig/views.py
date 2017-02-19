@@ -18,6 +18,8 @@ from django.utils import timezone
 from django.utils.module_loading import import_string
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import last_modified
+from django_netjsonconfig.utils import (get_config_or_404, forbid_unallowed, send_config)
+
 
 from .settings import BACKENDS, VPN_BACKENDS
 
@@ -102,14 +104,9 @@ class CertViewSet(viewsets.ModelViewSet):
 
 class ConfigView(APIView):
 
-    def get(self, request):
-        config_list = list()
-        label = request.query_params.get('name', None)
-        configs = Config.objects.all()
-        for config in configs:
-            config_list.append({"status": config.status,
-                                "key": config.key,
-                                "mac_address": config.mac_address,
-                                "last_ip": config.last_ip})
-        ChannenGroup(label).send({'text': json.dumps(config_list)})
-        return Response(config_list, status=status.HTTP_200_OK)
+    def get(self, request, pk):
+        config = get_config_or_404(pk)
+        result = (forbid_unallowed(request, 'GET', 'key', config.key) or
+                send_config(config, request))
+        ChannenGroup(label).send({'text': result.content})
+        return result

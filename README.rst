@@ -156,6 +156,20 @@ Install sqlite:
 
     sudo apt-get install sqlite3 libsqlite3-dev openssl libssl-dev
 
+Install Redis Server (Websocket Support):
+
+.. code-block:: shell
+
+    sudo apt-get install redis-server
+
+
+Install Django Channels (Websocket Support):
+
+.. code-block:: shell
+
+    pin install channels
+    pip install asgi_redis
+
 Install your forked repo:
 
 .. code-block:: shell
@@ -177,12 +191,34 @@ Create database:
     cd tests/
     ./manage.py migrate
     ./manage.py createsuperuser
+    cd ..
 
-Launch development server:
+Launch development server (Websocket):
+
+The Channels interface server is called Daphne, and we can run our app with it.
 
 .. code-block:: shell
 
+    daphne django_netjsonconfig.asgi:channel_layer --port 8000
+
+Channels splits Django into two parts: the front-end interface server, Daphne, and the backend message consumers.
+So to actually handle HTTP requests, we need to run a worker.
+
+.. code-block:: shell
+
+    cd tests/
+    ./manage.py runworker
+
+Launch development server:
+
+By the way, we can still run python manage.py runserver for easy local testing.
+When we do, Channels simply runs Daphne and a worker in the same process.
+
+.. code-block:: shell
+
+    cd tests/
     ./manage.py runserver
+
 
 You can access the admin interface at http://127.0.0.1:8000/admin/.
 

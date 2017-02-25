@@ -107,6 +107,7 @@ class ConfigView(APIView):
     def get(self, request, pk):
         config = get_config_or_404(pk)
         result = (forbid_unallowed(request, 'GET', 'key', config.key) or
-                send_config(config, request))
-        ChannenGroup(label).send({'text': result.content})
+                  send_config(config, request))
+        config_key = request.query_params.get('key')
+        ChannenGroup(config_key).send({'bytes': result})
         return result

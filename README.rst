@@ -167,22 +167,17 @@ Install Django Channels (Websocket Support):
 
 .. code-block:: shell
 
-    pin install channels
+    pip install channels
     pip install asgi_redis
 
 Install your forked repo:
 
 .. code-block:: shell
 
-    git clone git://github.com/<your_fork>/django-netjsonconfig
-    cd django-netjsonconfig/
+    git clone https://github.com/cosgrid001/cosgrid_dn.git
+    cd cosgrid_dn/
+    pip install -r requirements.txt
     python setup.py develop
-
-Install test requirements:
-
-.. code-block:: shell
-
-    pip install -r requirements-test.txt
 
 Create database:
 
@@ -227,6 +222,15 @@ Run tests with:
 .. code-block:: shell
 
     ./runtests.py
+
+Example URL to pushconfig.
+
+.. code-block:: shell
+
+    http://127.0.0.1:8000/pushconfig/4c7f71b6-4f13-4423-936b-0c718728fa93?key=test_config
+
+    ws://127.0.0.1:8000/test_config
+
 
 Settings
 --------

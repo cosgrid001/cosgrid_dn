@@ -1,4 +1,6 @@
 import json
+import gzip
+import StringIO
 from copy import deepcopy
 
 from django.contrib.auth.models import User
@@ -108,6 +110,10 @@ class ConfigView(APIView):
         config = get_config_or_404(pk)
         result = (forbid_unallowed(request, 'GET', 'key', config.key) or
                   send_config(config, request))
+        buf = StringIO.StringIO(result.content)
+        gzip_f = gzip.GzipFile(fileobj=buf)
+        content = gzip_f.read()
+        content = content.decode('utf-8')
         config_key = request.query_params.get('key')
-        ChannenGroup(config_key).send({'bytes': result})
+        ChannenGroup(config_key).send({'text': content})
         return result
